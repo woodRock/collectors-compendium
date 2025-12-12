@@ -1,87 +1,121 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { getCollections, addCollection, deleteCollection } from './firebase_api';
-import { useAuth } from './AuthContext'; // Import useAuth
+import { getCollections, deleteCollection, getFirstItemImageForCollection } from './firebase_api';
+import { useAuth } from './AuthContext';
+import CollectionFormModal from './CollectionFormModal'; // Import the new modal component
+import './CollectionList.css';
+import './CollectionFormModal.css'; // Import modal specific CSS (re-uses generic modal styles)
 
 function CollectionList() {
   const [collections, setCollections] = useState([]);
-  const [newCollectionName, setNewCollectionName] = useState('');
+  const [collectionImages, setCollectionImages] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { currentUser } = useAuth(); // Get current user from AuthContext
+  const { currentUser } = useAuth();
+
+  const [showCollectionModal, setShowCollectionModal] = useState(false);
+  const [collectionToEditInModal, setCollectionToEditInModal] = useState(null);
 
   const fetchCollections = useCallback(async () => {
-    if (!currentUser) return; // Ensure user is logged in
+    if (!currentUser) return;
     try {
       setLoading(true);
-      const data = await getCollections(currentUser.uid); // Pass userId
-      setCollections(data);
+      const fetchedCollections = await getCollections(currentUser.uid);
+      setCollections(fetchedCollections);
+
+      const images = {};
+      for (const collection of fetchedCollections) {
+        const imageData = await getFirstItemImageForCollection(currentUser.uid, collection.id);
+        images[collection.id] = imageData;
+      }
+      setCollectionImages(images);
+
     } catch (err) {
       setError('Failed to fetch collections.');
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }, [currentUser]); // Dependencies for useCallback
+  }, [currentUser]);
 
   useEffect(() => {
-    if (currentUser) { // Only fetch collections if user is logged in
+    if (currentUser) {
       fetchCollections();
     }
-  }, [currentUser, fetchCollections]); // Re-fetch when currentUser or fetchCollections changes
-
-  const handleAddCollection = async (e) => {
-    e.preventDefault();
-    if (!newCollectionName.trim() || !currentUser) return; // Ensure user is logged in
-    try {
-      await addCollection(currentUser.uid, newCollectionName); // Pass userId
-      setNewCollectionName('');
-      fetchCollections(); // Refresh the list
-    } catch (err) {
-      setError('Failed to add collection.');
-      console.error(err);
-    }
-  };
+  }, [currentUser, fetchCollections]);
 
   const handleDeleteCollection = async (id) => {
-    if (!currentUser) return; // Ensure user is logged in
+    if (!currentUser) return;
     try {
-      await deleteCollection(currentUser.uid, id); // Pass userId and collectionId
-      fetchCollections(); // Refresh the list
+      await deleteCollection(currentUser.uid, id);
+      fetchCollections();
     } catch (err) {
       setError('Failed to delete collection.');
       console.error(err);
     }
   };
 
+  const handleOpenAddCollectionModal = () => {
+    setCollectionToEditInModal(null);
+    setShowCollectionModal(true);
+  };
+
+  const handleOpenEditCollectionModal = (collection) => {
+    setCollectionToEditInModal(collection);
+    setShowCollectionModal(true);
+  };
+
+  const handleCloseCollectionModal = () => {
+    setShowCollectionModal(false);
+    setCollectionToEditInModal(null);
+  };
+
+  const handleCollectionSaved = () => {
+    fetchCollections(); // Refresh collections after save/update
+  };
+
   if (loading) return <p>Loading collections...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
-    <div>
+    <div className="collection-list-container">
       <h2>Your Collections</h2>
-      <form onSubmit={handleAddCollection}>
-        <input
-          type="text"
-          value={newCollectionName}
-          onChange={(e) => setNewCollectionName(e.target.value)}
-          placeholder="New collection name"
-        />
-        <button type="submit">Add Collection</button>
-      </form>
+      <button type="button" className="add-collection-button" onClick={handleOpenAddCollectionModal}>
+        + Add Collection
+      </button>
 
       {collections.length === 0 ? (
-        <p>No collections yet. Add one above!</p>
+        <p className="no-collections">No collections yet. Add one above!</p>
       ) : (
-        <ul>
+        <ul className="collection-list">
           {collections.map(collection => (
-            <li key={collection.id}>
-              <Link to={`/collections/${collection.id}`}>{collection.name}</Link>
-              <button onClick={() => handleDeleteCollection(collection.id)} style={{ marginLeft: '10px', color: 'red' }}>Delete</button>
+            <li key={collection.id} className="collection-item">
+              <Link to={`/collections/${collection.id}`}>
+                {collectionImages[collection.id] && (
+                  <img
+                    src={collectionImages[collection.id]}
+                    alt={collection.name}
+                    className="collection-display-image"
+                  />
+                )}
+                <span>{collection.name}</span>
+              </Link>
+              <div className="collection-actions">
+                <button type="button" onClick={() => handleOpenEditCollectionModal(collection)}>Edit</button>
+                <button type="button" onClick={() => handleDeleteCollection(collection.id)} className="delete">Delete</button>
+              </div>
             </li>
           ))}
         </ul>
       )}
+
+      <CollectionFormModal
+        isOpen={showCollectionModal}
+        onClose={handleCloseCollectionModal}
+        currentUser={currentUser}
+        onCollectionSaved={handleCollectionSaved}
+        collectionToEdit={collectionToEditInModal}
+      />
     </div>
   );
 }

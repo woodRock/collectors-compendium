@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { auth } from './firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Import Link
 import { useAuth } from './AuthContext';
+import './SignIn.css';
 
 function SignIn() {
   const [email, setEmail] = useState('');
@@ -15,7 +16,7 @@ function SignIn() {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate('/'); // Redirect to home after successful sign-up
+      navigate('/');
     } catch (err) {
       setError(err.message);
     }
@@ -25,7 +26,7 @@ function SignIn() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/'); // Redirect to home after successful sign-in
+      navigate('/');
     } catch (err) {
       setError(err.message);
     }
@@ -34,16 +35,16 @@ function SignIn() {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      setError(null); // Clear any previous errors
+      setError(null);
     } catch (err) {
       setError(err.message);
     }
   };
 
   return (
-    <div>
+    <div className="signin-container">
       {currentUser ? (
-        <div>
+        <div className="welcome-message">
           <h2>Welcome, {currentUser.email}</h2>
           <button onClick={handleSignOut}>Sign Out</button>
         </div>
@@ -66,7 +67,10 @@ function SignIn() {
             <button type="submit" onClick={handleSignIn}>Sign In</button>
             <button type="submit" onClick={handleSignUp}>Sign Up</button>
           </form>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div className="forgot-password-link"> {/* Add a div for styling if needed */}
+            <Link to="/forgot-password">Forgot Password?</Link>
+          </div>
+          {error && <p className="error">{error}</p>}
         </div>
       )}
     </div>

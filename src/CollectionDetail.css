@@ -1,0 +1,169 @@
+.collection-detail-container {
+  padding: 20px;
+}
+
+.collection-detail-container h2,
+.collection-detail-container h3 {
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.collection-detail-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.collection-detail-container form input[type="text"],
+.collection-detail-container form textarea {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.collection-detail-container form .camera-controls,
+.collection-detail-container form .file-input-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.collection-detail-container form .camera-controls button,
+.collection-detail-container form .file-input-controls button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.collection-detail-container form .camera-controls button:hover,
+.collection-detail-container form .file-input-controls button:hover {
+  background-color: #0056b3;
+}
+
+.collection-detail-container form .video-container {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.collection-detail-container form video {
+  width: 100%; /* Max width within container */
+  max-width: 320px; /* Limit camera preview size */
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.collection-detail-container .image-preview {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.collection-detail-container .image-preview img {
+  max-width: 224px;
+  max-height: 224px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.collection-detail-container .image-preview button {
+  background-color: #6c757d; /* Grey for remove button */
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.collection-detail-container .image-preview button:hover {
+  background-color: #5a6268;
+}
+
+.collection-detail-container .item-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.item-card {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.item-card:hover {
+  transform: translateY(-3px);
+}
+
+.item-card h4 {
+  margin-top: 0;
+  color: #333;
+}
+
+.item-card p {
+  color: #666;
+  font-size: 0.9rem;
+  flex-grow: 1; /* Allow description to take available space */
+}
+
+.item-card img {
+  max-width: 100%;
+  height: 200px; /* Fixed height for consistency */
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.item-card .item-actions button {
+  background-color: #ffc107; /* Yellow for edit */
+  color: #333;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 0 5px;
+}
+
+.item-card .item-actions button:hover {
+  background-color: #e0a800;
+}
+
+.item-card .item-actions button.delete {
+  background-color: #dc3545; /* Red for delete */
+  color: white;
+}
+
+.item-card .item-actions button.delete:hover {
+  background-color: #c82333;
+}
+
+p.error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}

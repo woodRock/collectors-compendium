@@ -1,5 +1,5 @@
 import { db } from './firebase';
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where } from 'firebase/firestore';
+import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy, limit } from 'firebase/firestore';
 
 // --- Collection Functions ---
 
@@ -110,6 +110,28 @@ export const getItemsByCollection = async (userId, collectionId) => {
   }
 };
 
+// Get the image data of the first item in a collection
+export const getFirstItemImageForCollection = async (userId, collectionId) => {
+  try {
+    const q = query(
+      collection(db, 'items'),
+      where('userId', '==', userId),
+      where('collectionId', '==', collectionId),
+      orderBy('createdAt', 'asc'), // Order by creation time to get the "first"
+      limit(1) // Limit to only one document
+    );
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const item = querySnapshot.docs[0].data();
+      return item.imageData; // Return the image data
+    }
+    return null; // No item found
+  } catch (e) {
+    console.error('Error getting first item image: ', e);
+    throw e;
+  }
+};
+
 // Update an item
 export const updateItem = async (id, itemName, itemDescription, imageData) => {
   try {
@@ -134,4 +156,3 @@ export const deleteItem = async (id) => {
     throw e;
   }
 };
-

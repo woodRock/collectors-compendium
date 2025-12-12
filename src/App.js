@@ -4,14 +4,15 @@ import Home from './Home';
 import CollectionList from './CollectionList';
 import CollectionDetail from './CollectionDetail';
 import SignIn from './SignIn';
+import ForgotPassword from './ForgotPassword'; // Import ForgotPassword component
 import PrivateRoute from './PrivateRoute';
-import { AuthProvider, useAuth } from './AuthContext'; // Import useAuth
-import { auth } from './firebase'; // Import auth to enable sign out
+import { AuthProvider, useAuth } from './AuthContext';
+import { auth } from './firebase';
 import { signOut } from 'firebase/auth';
-import './App.css';
+import './App.css'; // Import the main App.css
 
-function MainApp() { // Renamed App to MainApp to avoid confusion with the wrapper
-  const { currentUser } = useAuth(); // Use useAuth hook inside MainApp component
+function MainApp() {
+  const { currentUser } = useAuth();
 
   const handleSignOut = async () => {
     try {
@@ -23,22 +24,22 @@ function MainApp() { // Renamed App to MainApp to avoid confusion with the wrapp
 
   return (
     <Router>
-      <div>
+      <div className="App"> {/* Apply global App class */}
         <nav>
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/" className="nav-link">Home</Link>
             </li>
-            {currentUser && ( // Only show Collections link if logged in
+            {currentUser && (
               <li>
-                <Link to="/collections">Collections</Link>
+                <Link to="/collections" className="nav-link">Collections</Link>
               </li>
             )}
             <li>
               {currentUser ? (
-                <button onClick={handleSignOut} style={{ background: 'none', border: 'none', color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}>Sign Out</button>
+                <button onClick={handleSignOut} className="nav-button">Sign Out</button>
               ) : (
-                <Link to="/signin">Sign In</Link>
+                <Link to="/signin" className="nav-link">Sign In</Link>
               )}
             </li>
           </ul>
@@ -47,6 +48,7 @@ function MainApp() { // Renamed App to MainApp to avoid confusion with the wrapp
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Add ForgotPassword route */}
           <Route
             path="/collections"
             element={
@@ -69,7 +71,7 @@ function MainApp() { // Renamed App to MainApp to avoid confusion with the wrapp
   );
 }
 
-function App() { // This is the root component now
+function App() {
   return (
     <AuthProvider>
       <MainApp />

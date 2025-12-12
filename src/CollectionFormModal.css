@@ -1,0 +1,14 @@
+/* Reuses modal styles from ItemFormModal.css as they are generic for modals */
+/* If specific overrides are needed, they would go here. */
+
+.modal-overlay {
+    /* Styles are already defined in ItemFormModal.css or App.css (if global) */
+    /* If this modal needs different overlay styles, define them here */
+}
+
+.modal-content {
+    /* Styles are already defined in ItemFormModal.css */
+    /* If this modal needs different content styles, define them here */
+}
+
+/* Specific styles for CollectionFormModal if needed */
