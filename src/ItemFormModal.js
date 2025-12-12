@@ -48,19 +48,14 @@ function ItemFormModal({ isOpen, onClose, collectionId, currentUser, onItemSaved
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    if (showCamera && isOpen) {
-      const selectedDevice = videoInputDevices[currentCameraIndex];
-      startCamera(selectedDevice ? selectedDevice.deviceId : null);
-    } else {
-      stopCamera();
+  const stopCamera = () => {
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(track => track.stop());
+      mediaStreamRef.current = null;
     }
-    return () => {
-      stopCamera();
-    };
-  }, [showCamera, currentCameraIndex, videoInputDevices, isOpen]);
+  };
 
-  const startCamera = async (deviceId) => {
+  const startCamera = useCallback(async (deviceId) => {
     stopCamera();
     try {
       const constraints = {
@@ -78,14 +73,19 @@ function ItemFormModal({ isOpen, onClose, collectionId, currentUser, onItemSaved
       setFormError('Could not access camera. Please ensure permissions are granted.');
       setShowCamera(false);
     }
-  };
+  }, []); // startCamera's dependencies are internal to its logic or passed as args, so [] is appropriate here
 
-  const stopCamera = () => {
-    if (mediaStreamRef.current) {
-      mediaStreamRef.current.getTracks().forEach(track => track.stop());
-      mediaStreamRef.current = null;
+  useEffect(() => {
+    if (showCamera && isOpen) {
+      const selectedDevice = videoInputDevices[currentCameraIndex];
+      startCamera(selectedDevice ? selectedDevice.deviceId : null);
+    } else {
+      stopCamera();
     }
-  };
+    return () => {
+      stopCamera();
+    };
+  }, [showCamera, currentCameraIndex, videoInputDevices, isOpen, startCamera]); // Added startCamera to dependencies
 
   const handleFlipCamera = () => {
     const nextIndex = (currentCameraIndex + 1) % videoInputDevices.length;

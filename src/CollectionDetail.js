@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { getItemsByCollection, deleteItem, getCollections } from './firebase_api';
 import { useAuth } from './AuthContext';
