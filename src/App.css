@@ -15,7 +15,8 @@ code {
 .App {
   max-width: 960px;
   margin: 40px auto; /* More margin to highlight the scroll */
-  padding: 40px; /* More padding inside the scroll */
+  padding: 40px; /* Reset original padding */
+  padding-right: 170px; /* Dedicated space for 150px wide mascot + 20px margin */
   background-image: url('https://t3.ftcdn.net/jpg/00/32/22/14/360_F_32221493_P9a74TqHegjfiOA7TpxYDmDiCzNmulDA.jpg'); /* Parchment texture */
   background-size: cover;
   background-repeat: no-repeat;
@@ -30,6 +31,15 @@ code {
   transform: rotateZ(-0.5deg); 
   transform-origin: center;
   z-index: 1; /* Ensure content is above background */
+}
+
+/* Mobile adjustments for .App padding */
+@media (max-width: 768px) {
+  .App {
+    padding-right: 60px; /* Reduced padding for smaller mascot on mobile (100px width + 20px margin) */
+    margin: 20px auto; /* Less margin on mobile */
+    min-height: calc(100vh - 40px);
+  }
 }
 
 /* Navigation Styles */

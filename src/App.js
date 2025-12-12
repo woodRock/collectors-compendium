@@ -8,6 +8,7 @@ import PrivateRoute from './PrivateRoute';
 import { AuthProvider, useAuth } from './AuthContext';
 import { auth } from './firebase';
 import { signOut } from 'firebase/auth';
+import Mascot from './Mascot'; // Import the Mascot component
 import './App.css'; // Import the main App.css
 
 function MainApp() {
@@ -61,6 +62,7 @@ function MainApp() {
             }
           />
         </Routes>
+        <Mascot /> {/* Render the Mascot globally */}
       </div>
     </Router>
   );

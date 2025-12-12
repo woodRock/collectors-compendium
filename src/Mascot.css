@@ -1,0 +1,25 @@
+.mascot-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 450px; /* Default desktop width */
+  height: 450px; /* Default desktop height */
+  z-index: 1000;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .mascot-container {
+    width: 150px; /* Smaller width for mobile */
+    height: 100vh; /* Stretch to full height */
+    right: 0;
+    top: 0;
+  }
+}
+
+/* Optional: Even smaller for very small screens if needed */
+@media (max-width: 480px) {
+  .mascot-container {
+    width: 100px;
+  }
+}

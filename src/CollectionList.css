@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  gap: 10px; /* Space between icon and text */
+  /* Removed gap: 10px; */
 }
 
 .collections-header h2 {
@@ -16,12 +16,7 @@
   text-align: center;
 }
 
-/* New style for the combined quill and ink SVG */
-.quill-ink-icon {
-  width: 40px; /* Adjust size as needed */
-  height: 40px;
-  color: #5d4a3e; /* Match text color if it's an SVG and fill can be controlled */
-}
+/* Removed .quill-ink-icon style block */
 
 .collection-list-container form {
   display: flex;
