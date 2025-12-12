@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Home from './Home';
 import CollectionList from './CollectionList';
 import CollectionDetail from './CollectionDetail';
 import SignIn from './SignIn';
@@ -27,12 +26,9 @@ function MainApp() {
       <div className="App"> {/* Apply global App class */}
         <nav>
           <ul>
-            <li>
-              <Link to="/" className="nav-link">Home</Link>
-            </li>
             {currentUser && (
               <li>
-                <Link to="/collections" className="nav-link">Collections</Link>
+                <Link to="/" className="nav-link">Collections</Link> {/* Link to root, which is Collections */}
               </li>
             )}
             <li>
@@ -46,11 +42,10 @@ function MainApp() {
         </nav>
 
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Add ForgotPassword route */}
           <Route
-            path="/collections"
+            path="/" /* Root path is now Collections */
             element={
               <PrivateRoute>
                 <CollectionList />

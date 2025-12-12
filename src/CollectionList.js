@@ -79,7 +79,10 @@ function CollectionList() {
 
   return (
     <div className="collection-list-container">
-      <h2>Your Collections</h2>
+      <div className="collections-header">
+        <img src="/quill_and_ink.svg" alt="Quill and Ink" className="quill-ink-icon" />
+        <h2>Your Collections</h2>
+      </div>
       <button type="button" className="add-collection-button" onClick={handleOpenAddCollectionModal}>
         + Add Collection
       </button>

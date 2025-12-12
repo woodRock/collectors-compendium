@@ -38,6 +38,7 @@ nav ul {
   padding: 0;
   display: flex;
   justify-content: center; /* Center navigation for scroll theme */
+  align-items: center; /* Vertically align items */
   background-color: #7b5e4a; /* Darker, rustic navigation bar */
   margin: -40px -40px 30px -40px; /* Adjust to sit flush with App padding */
   padding: 10px 40px;
