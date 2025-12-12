@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { getItemsByCollection, addItem, updateItem, deleteItem, getCollections } from './firebase_api';
 import { compressImageAndConvertToBase64 } from './imageUtils'; // Import the image utility
@@ -23,11 +23,35 @@ function CollectionDetail() {
   const canvasRef = useRef(null);
   const mediaStreamRef = useRef(null);
 
+  const fetchCollectionAndItems = useCallback(async () => {
+    if (!currentUser) return;
+    try {
+      setLoading(true);
+      const allCollections = await getCollections(currentUser.uid);
+      const currentCollection = allCollections.find(col => col.id === id);
+      if (currentCollection) {
+        setCollectionName(currentCollection.name);
+      } else {
+        setError('Collection not found or not owned by you.');
+        setLoading(false);
+        return;
+      }
+
+      const data = await getItemsByCollection(currentUser.uid, id);
+      setItems(data);
+    } catch (err) {
+      setError('Failed to fetch collection details or items.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [currentUser, id]); // Dependencies for useCallback
+
   useEffect(() => {
     if (currentUser) {
       fetchCollectionAndItems();
     }
-  }, [id, currentUser]);
+  }, [currentUser, fetchCollectionAndItems]); // fetchCollectionAndItems is now a stable dependency
 
   useEffect(() => {
     if (showCamera) {
@@ -99,31 +123,6 @@ function CollectionDetail() {
       setCapturedImageBase64(base64Image);
       stopCamera(); // Stop camera after taking photo
       setShowCamera(false); // Hide camera UI
-    }
-  };
-
-
-  const fetchCollectionAndItems = async () => {
-    if (!currentUser) return;
-    try {
-      setLoading(true);
-      const allCollections = await getCollections(currentUser.uid);
-      const currentCollection = allCollections.find(col => col.id === id);
-      if (currentCollection) {
-        setCollectionName(currentCollection.name);
-      } else {
-        setError('Collection not found or not owned by you.');
-        setLoading(false);
-        return;
-      }
-
-      const data = await getItemsByCollection(currentUser.uid, id);
-      setItems(data);
-    } catch (err) {
-      setError('Failed to fetch collection details or items.');
-      console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 

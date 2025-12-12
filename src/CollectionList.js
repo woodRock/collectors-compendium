@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { getCollections, addCollection, deleteCollection } from './firebase_api';
 import { useAuth } from './AuthContext'; // Import useAuth
@@ -10,13 +10,7 @@ function CollectionList() {
   const [error, setError] = useState(null);
   const { currentUser } = useAuth(); // Get current user from AuthContext
 
-  useEffect(() => {
-    if (currentUser) { // Only fetch collections if user is logged in
-      fetchCollections();
-    }
-  }, [currentUser]); // Re-fetch when currentUser changes
-
-  const fetchCollections = async () => {
+  const fetchCollections = useCallback(async () => {
     if (!currentUser) return; // Ensure user is logged in
     try {
       setLoading(true);
@@ -28,7 +22,13 @@ function CollectionList() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentUser]); // Dependencies for useCallback
+
+  useEffect(() => {
+    if (currentUser) { // Only fetch collections if user is logged in
+      fetchCollections();
+    }
+  }, [currentUser, fetchCollections]); // Re-fetch when currentUser or fetchCollections changes
 
   const handleAddCollection = async (e) => {
     e.preventDefault();
