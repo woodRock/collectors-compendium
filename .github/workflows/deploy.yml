@@ -5,6 +5,10 @@ on:
     branches:
       - main # Set this to the branch you want to deploy from (e.g., main, master)
 
+permissions:
+  contents: write
+  pages: write # Add this line for GitHub Pages deployment
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -16,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Specify your Node.js version
+          node-version: '18.x' # Changed to 18.x for broader compatibility
 
       - name: Install dependencies
         run: npm install
