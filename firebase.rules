@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Collections rule
+    match /collections/{collectionId} {
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+
+    // Items rule
+    match /items/{itemId} {
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+  }
+}
