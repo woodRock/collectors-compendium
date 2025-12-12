@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/collectors-compendium/static/css/main.f855e6bc.css",
+    "main.js": "/collectors-compendium/static/js/main.e847404c.js",
+    "index.html": "/collectors-compendium/index.html",
+    "main.f855e6bc.css.map": "/collectors-compendium/static/css/main.f855e6bc.css.map",
+    "main.e847404c.js.map": "/collectors-compendium/static/js/main.e847404c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.e847404c.js"
+  ]
+}
