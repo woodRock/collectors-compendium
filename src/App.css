@@ -1,7 +1,7 @@
 /* Global Styles */
 body {
   margin: 0;
-  font-family: 'Georgia', serif; /* More traditional font */
+  font-family: 'Garamond', serif; /* Changed to Garamond */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #d4c1a7; /* Muted background for behind the scroll */
@@ -61,7 +61,7 @@ nav a, nav button {
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  font-family: 'Georgia', serif;
+  font-family: 'Garamond', serif; /* Changed to Garamond */
 }
 
 nav a:hover, nav button:hover {
@@ -94,7 +94,7 @@ form textarea {
   box-sizing: border-box;
   background-color: #fffaf0; /* Off-white for input fields */
   color: #5d4a3e;
-  font-family: 'Georgia', serif;
+  font-family: 'Garamond', serif; /* Changed to Garamond */
 }
 
 form button {
@@ -106,7 +106,7 @@ form button {
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s ease;
-  font-family: 'Georgia', serif;
+  font-family: 'Garamond', serif; /* Changed to Garamond */
 }
 
 form button:hover {
@@ -125,5 +125,5 @@ form button[type="submit"]:hover {
 p.error {
   color: #b00020; /* Darker red for error */
   font-weight: bold;
-  font-family: 'Georgia', serif;
+  font-family: 'Garamond', serif; /* Changed to Garamond */
 }

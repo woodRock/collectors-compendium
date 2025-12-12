@@ -39,6 +39,7 @@ function ItemFormModal({ isOpen, onClose, collectionId, currentUser, onItemSaved
         const devices = await navigator.mediaDevices.enumerateDevices();
         const videoDevices = devices.filter(device => device.kind === 'videoinput');
         setVideoInputDevices(videoDevices);
+        console.log('Detected video devices:', videoDevices); // Debug log
       } catch (err) {
         console.error('Error enumerating devices: ', err);
       }

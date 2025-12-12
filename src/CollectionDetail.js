@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { getItemsByCollection, deleteItem, getCollections } from './firebase_api';
 import { useAuth } from './AuthContext';
 import ItemFormModal from './ItemFormModal'; // Import the new modal component
@@ -8,6 +8,7 @@ import './ItemFormModal.css'; // Import modal specific CSS
 
 function CollectionDetail() {
   const { id } = useParams();
+  const navigate = useNavigate(); // Initialize useNavigate
   const [collectionName, setCollectionName] = useState('');
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -77,11 +78,18 @@ function CollectionDetail() {
     fetchCollectionAndItems(); // Refresh items after save/update
   };
 
+  const handleBackToCollections = () => {
+    navigate('/'); // Navigate to the root, which is the collections list
+  };
+
   if (loading) return <p>Loading collection details...</p>;
   if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="collection-detail-container">
+      <button type="button" onClick={handleBackToCollections} className="back-button">
+        &lt; Back to Collections
+      </button>
       <h2>{collectionName}</h2>
       
       <button type="button" className="add-item-button" onClick={handleOpenAddItemModal}>
