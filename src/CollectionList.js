@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getCollections, deleteCollection, getFirstItemImageForCollection } from './firebase_api';
 import { useAuth } from './AuthContext';
 import CollectionFormModal from './CollectionFormModal'; // Import the new modal component
@@ -12,6 +12,7 @@ function CollectionList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { currentUser } = useAuth();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const [showCollectionModal, setShowCollectionModal] = useState(false);
   const [collectionToEditInModal, setCollectionToEditInModal] = useState(null);
@@ -74,6 +75,15 @@ function CollectionList() {
     fetchCollections(); // Refresh collections after save/update
   };
 
+  const handleStartInventoryCheck = () => {
+    if (collections.length > 0) {
+      // Navigate to the first collection in inventory mode
+      navigate(`/collections/${collections[0].id}`, { state: { isInventoryMode: true } });
+    } else {
+      alert('You need to create at least one collection to start an inventory check.');
+    }
+  };
+
   if (loading) return <p>Loading collections...</p>;
   if (error) return <p className="error">{error}</p>;
 
@@ -82,6 +92,9 @@ function CollectionList() {
       <h2>Your Collections</h2>
       <button type="button" className="add-collection-button" onClick={handleOpenAddCollectionModal}>
         + Add Collection
+      </button>
+      <button type="button" className="start-inventory-button" onClick={handleStartInventoryCheck}>
+        Start Inventory Check
       </button>
 
       {collections.length === 0 ? (

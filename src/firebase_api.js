@@ -85,6 +85,7 @@ export const addItem = async (userId, collectionId, itemName, itemDescription, i
       description: itemDescription,
       imageData, // Store Base64 image data directly
       createdAt: new Date(),
+      found: true, // New field for inventory check
     });
     return docRef.id;
   } catch (e) {
@@ -153,6 +154,17 @@ export const deleteItem = async (id) => {
     await deleteDoc(doc(db, 'items', id));
   } catch (e) {
     console.error('Error deleting item: ', e);
+    throw e;
+  }
+};
+
+// Update an item's 'found' status
+export const updateItemFoundStatus = async (itemId, foundStatus) => {
+  try {
+    const itemRef = doc(db, 'items', itemId);
+    await updateDoc(itemRef, { found: foundStatus });
+  } catch (e) {
+    console.error('Error updating item found status: ', e);
     throw e;
   }
 };
